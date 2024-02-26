@@ -122,14 +122,7 @@
       <a href="/Product/Wilayah.html">Wilayah</a>
       <a href="/Product/Lingkungan.html">Lingkungan</a>
   </div>
-  <div class="box" id="myBox">
-    <h2>Information</h2>
-    <p>Wilayah: <span id="wilayah"></span></p>
-    <h3>Contact Details</h3>
-    <p>Nama: <span id="nama"></span></p>
-    <p>Nomor: <span id="nomor"></span></p>
-  </div>
-    <input id="pac-input" class="controls" type="text" placeholder="Input your location here...">
+    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
     <div id="map">
         
       <script>
@@ -140,7 +133,7 @@
           center: {lat: -6.240555431778528, lng: 106.78744159242352}
         });
   
-        map.data.loadGeoJson("/Product/Maps/Paroki_Blok_B_-_Wilayah_13_Mei_2016.geojson");
+        map.data.loadGeoJson("/Product/Maps/Dekanat Selatan.json");
   
           var input = document.getElementById('pac-input');
           var searchBox = new google.maps.places.SearchBox(input);
@@ -158,72 +151,81 @@
               return;
             }
   
+            markers.forEach(function(marker) {
+              marker.setMap(null);
+            });
+            markers = [];
+  
             var bounds = new google.maps.LatLngBounds();
-            var validResult = false;
             places.forEach(function(place) {
               if (!place.geometry) {
                 console.log("Returned place contains no geometry");
                 return;
               }
-              if (map.data.contains(place.geometry.location)) {
-                validResult = true;
-                var icon = {
-                  url: place.icon,
-                  size: new google.maps.Size(71, 71),
-                  origin: new google.maps.Point(0, 0),
-                  anchor: new google.maps.Point(17, 34),
-                  scaledSize: new google.maps.Size(25, 25)
-                };
-    
-                markers.push(new google.maps.Marker({
-                  map: map,
-                  icon: icon,
-                  title: place.name,
-                  position: place.geometry.location
-                }));
-    
-                if (place.geometry.viewport) {
-                  bounds.union(place.geometry.viewport);
-                } else {
-                  bounds.extend(place.geometry.location);
-                }
+              var icon = {
+                url: place.icon,
+                size: new google.maps.Size(71, 71),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(17, 34),
+                scaledSize: new google.maps.Size(25, 25)
+              };
+  
+              markers.push(new google.maps.Marker({
+                map: map,
+                icon: icon,
+                title: place.name,
+                position: place.geometry.location
+              }));
+  
+              if (place.geometry.viewport) {
+                bounds.union(place.geometry.viewport);
+              } else {
+                bounds.extend(place.geometry.location);
               }
             });
   
-            if (validResult) {
-              map.fitBounds(bounds);
-            } else {
-              alert("Search result is beyond the boundaries");
-            }
+            map.fitBounds(bounds);
           });
-  
           var infowindow = new google.maps.InfoWindow();
+
           var box = document.getElementById("myBox");
           box.style.display = "none";
-  
+
+          if (box.style.display === "none") {
+            box.style.display = "block";
+        } else {
+            box.style.display = "none";
+        }
+      
           map.data.addListener('click', function(event) {
             let wilayah = event.feature.getProperty("Name");
-            let html = 'Wilayah: ' + wilayah;
-            let nomor = event.feature.getProperty("Nomor");
-            let nama = event.feature.getProperty("Nama");
-            infowindow.setContent(html); 
-            infowindow.setPosition(event.latLng); 
-            infowindow.setOptions({pixelOffset: new google.maps.Size(0,-30)}); 
-            infowindow.open(map);
-            document.getElementById("wilayah").innerText = wilayah;
-            document.getElementById("nomor").innerText = nomor;
-            document.getElementById("nama").innerText = nama;
-          });
+          let html = 'Wilayah: ' + wilayah;
+          let nomor = event.feature.getProperty("Nomor");
+          let nama = event.feature.getProperty("Nama");
+          infowindow.setContent(html); 
+          infowindow.setPosition(event.latLng); 
+          infowindow.setOptions({pixelOffset: new google.maps.Size(0,-30)}); 
+          infowindow.open(map);
+          document.getElementById("wilayah").innerText = wilayah;
+          document.getElementById("nomor").innerText = nomor;
+          document.getElementById("nama").innerText = nama;
+        
+          
+        });
         
           map.data.setStyle({
             fillColor: 'green',
             strokeWeight: 1
           });
         }
+  
+        
       </script>
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtJBMTiviNkvNjgl1s89glbmsU1PMMNFw&libraries=places&callback=initAutocomplete" async defer></script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtJBMTiviNkvNjgl1s89glbmsU1PMMNFw&libraries=places&callback=initAutocomplete"
+           async defer>
+          </script>
     </div>
     
-    
+  
   </body>
 </html>
