@@ -118,11 +118,10 @@
   </head>
   <body>
     <div class="navbar">
-      <a href="Computer_Science_IA/Product/index.html">Home</a>
-      <a href="Computer_Science_IA/Product/Wilayah.html">Wilayah</a>
-      <a href="Computer_Science_IA/Product/Lingkungan.html">Lingkungan</a>
+      <a href="index.html">Home</a>
+      <a href="Wilayah.html">Wilayah</a>
+      <a href="Lingkungan.html">Lingkungan</a>
   </div>
-    
     <input id="pac-input" class="controls" type="text" placeholder="Input your location here...">
     <div id="map">
         
@@ -134,7 +133,7 @@
           center: {lat: -6.240555431778528, lng: 106.78744159242352}
         });
   
-        map.data.loadGeoJson("Maps/Paroki_Blok_B_-_Lingkungan_13_Mei_2016.json");
+        map.data.loadGeoJson("Maps/Paroki_Blok_B_-_Lingkungan_13_Mei_2016.geojson");
   
           var input = document.getElementById('pac-input');
           var searchBox = new google.maps.places.SearchBox(input);
@@ -200,7 +199,7 @@
       
           map.data.addListener('click', function(event) {
             let wilayah = event.feature.getProperty("Name");
-          let html = 'Lingkungan: ' + wilayah;
+          let html = 'lingkungan: ' + wilayah;
           let nomor = event.feature.getProperty("Nomor");
           let nama = event.feature.getProperty("Nama");
           infowindow.setContent(html); 
@@ -234,5 +233,6 @@
       <p>Nomor: <span id="nomor"></span></p>
 
   </div>
+  
   </body>
 </html>
